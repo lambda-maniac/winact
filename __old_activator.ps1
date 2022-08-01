@@ -1,3 +1,7 @@
+# 
+# OLD VERSION, SEE `winact.ps1'
+# 
+
 $global:licenses = @{
     a = "Home/Core" 
     b = "Home/Core (Country Specific)"
