@@ -30,9 +30,12 @@ function main
     Write-Host " *** Supported versions may include:"
     Write-Host "     - Win10"
     Write-Host "     - Win11"
-    Write-Host "`n *** Hint: It looks like your Windows version is $([Environment]::OSVersion.Version.Major)."
-    $OSVersion = Read-Host "`n *** Please select your version (10, 11)"
-    $loaded    = $false;
+
+    $OSVersion = [Environment]::OSVersion.Version.Major
+
+    Write-Host "`n *** It looks like your Windows version is $OSVersion."
+    
+    $loaded = $false;
 
     if ($OSVersion -eq "10")
     {
@@ -128,7 +131,7 @@ function main
 
     if (-not($loaded))
     {
-        Write-Host "`n *** Fatal: Error: Version $OSVersion does not exist."
+        Write-Host "`n *** Fatal: Error: Version '$OSVersion' is not available."
         return
     }
 
