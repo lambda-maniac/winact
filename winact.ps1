@@ -7,11 +7,11 @@ oooooo   oooooo     oooo  o8o                                      .
      ``888`'    ``888`'       888   888   888  d8(  888  888   .o8   888 .
       ``8`'      ``8`'       o888o o888o o888o ``Y888`"`"8o ``Y8bod8P`'   `"888`"
 
-                                     *** Windows Activator, version: 0.3
-                                     By: Sr. Meia-noite#0224
+                                            *** Windows Activator, version: 0.4
+                                            By: Sr. Meia-noite
 "
 
-function main 
+function main
 {
     clear
 
@@ -34,7 +34,7 @@ function main
     $OSVersion = [Environment]::OSVersion.Version.Major
 
     Write-Host "`n *** It looks like your Windows version is $OSVersion."
-    
+
     $loaded = $false;
 
     if ($OSVersion -eq "10")
@@ -43,10 +43,10 @@ function main
 
         $loaded = $true;
 
-        $script:server = "kms.lotro.cc"
+        $script:server = "kms.ddns.net"
 
         $script:licenses = @{
-            a = "Home/Core" 
+            a = "Home/Core"
             b = "Home/Core (Country Specific)"
             c = "Home/Core (Single Language)"
             d = "Home/Core N"
@@ -89,23 +89,23 @@ function main
         $script:server = "s8.now.im"
 
         $script:licenses = @{
-            a = "Windows 11 Pro"                      
-            b = "Windows 11 Pro N"                    
-            c = "Windows 11 Pro Workstations"         
-            d = "Windows 11 Pro Workstations N"       
-            e = "Windows 11 Pro Education"            
-            f = "Windows 11 Home"                     
-            g = "Windows 11 Home N"                   
+            a = "Windows 11 Pro"
+            b = "Windows 11 Pro N"
+            c = "Windows 11 Pro Workstations"
+            d = "Windows 11 Pro Workstations N"
+            e = "Windows 11 Pro Education"
+            f = "Windows 11 Home"
+            g = "Windows 11 Home N"
             h = "Windows 11 Home Home Single Language"
-            i = "Windows 11 Home Country Specific"    
-            j = "Windows 11 Education"                
-            k = "Windows 11 Education N"              
-            l = "Windows 11 Enterprise"               
-            m = "Windows 11 Enterprise N"             
-            n = "Windows 11 Enterprise G"             
-            o = "Windows 11 Enterprise G N"           
-            p = "Windows 11 Enterprise LTSC 2019"     
-            q = "Windows 11 Enterprise N LTSC 2019"   
+            i = "Windows 11 Home Country Specific"
+            j = "Windows 11 Education"
+            k = "Windows 11 Education N"
+            l = "Windows 11 Enterprise"
+            m = "Windows 11 Enterprise N"
+            n = "Windows 11 Enterprise G"
+            o = "Windows 11 Enterprise G N"
+            p = "Windows 11 Enterprise LTSC 2019"
+            q = "Windows 11 Enterprise N LTSC 2019"
         }
 
         $script:licenses_keys = @{
@@ -151,10 +151,25 @@ function main
         $version_name   = $script:licenses.$version_letter
         $version_serial = $script:licenses_keys.$version_name
     }
-    catch [System.Management.Automation.RuntimeException] 
+    catch [System.Management.Automation.RuntimeException]
     {
         Write-Host "`n *** Fatal: Error: The selected version does not exist, please try again."
         return
+    }
+
+    Write-Host "`n *** Would you like to use a custom KMS server? Default: <$script:server>"
+
+    $custom_server = Read-Host "     - Custom server (leave empty to default)"
+
+    if ($custom_server -ne "")
+    {
+        $script:server = $custom_server
+
+        Write-Host "`n *** Done, KMS server changed to: <$script:server>."
+    }
+    else
+    {
+        Write-Host "`n *** Keeping default KMS server: <$script:server>"
     }
 
     Write-Host "`n *** Initializing the activating protocol..."
@@ -166,6 +181,9 @@ function main
         $slmgr   = "$root\slmgr.vbs"
 
         $command = "$cscript $slmgr"
+
+        Write-Host "`n *** Uninstalling current key..."
+        Invoke-Expression "$command /upk"
 
         Write-Host "`n *** Changing the windows key to <$version_serial>..."
         Invoke-Expression "$command /ipk $version_serial"
